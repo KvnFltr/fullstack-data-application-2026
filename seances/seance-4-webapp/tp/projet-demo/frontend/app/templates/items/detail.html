@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ item.titre }} - GearShare{% endblock %}
+{% block content %}
+<h1>{{ item.titre }}</h1>
+<p>{{ item.description or "Aucune description." }}</p>
+<p>{{ item.tarif_jour }} € par jour</p>
+<p>{{ "Disponible" if item.disponible else "Indisponible" }}</p>
+{% if confirmation %}<p>{{ confirmation }}</p>{% endif %}
+{% for error in errors %}<p class="error">{{ error }}</p>{% endfor %}
+<h2>Réservations</h2>
+<ul>
+{% for reservation in reservations %}
+  <li>
+    {{ reservation.date_debut }} au {{ reservation.date_fin }} — {{ reservation.statut }}
+    {% if reservation.statut == "active" %}
+    <form method="post" action="/reservations/{{ reservation.id }}">
+      <input type="hidden" name="statut" value="annulee">
+      <input type="hidden" name="item_id" value="{{ item.id }}">
+      <button type="submit">Annuler</button>
+    </form>
+    {% endif %}
+  </li>
+{% else %}<li>Aucune réservation.</li>{% endfor %}
+</ul>
+<h2>Réserver</h2>
+<form method="post" action="/items/{{ item.id }}/reservations">
+  <label>Début <input type="date" name="date_debut" required value="{{ reservation_values.get('date_debut', '') }}"></label>
+  <label>Fin <input type="date" name="date_fin" required value="{{ reservation_values.get('date_fin', '') }}"></label>
+  <button type="submit">Réserver</button>
+</form>
+<a href="/items">Retour à la liste</a>
+{% endblock %}

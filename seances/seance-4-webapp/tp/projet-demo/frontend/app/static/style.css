@@ -1,0 +1,30 @@
+body {
+  color: #222;
+  font-family: sans-serif;
+  line-height: 1.5;
+  margin: 2rem auto;
+  max-width: 900px;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  max-width: 32rem;
+}
+
+.error {
+  color: #a00;
+}

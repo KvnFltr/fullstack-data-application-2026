@@ -86,9 +86,9 @@ def get_item(item_id: int):
 
 | Requête | Code attendu | Corps |
 |---|---|---|
-| `GET /items/42` | ? | ? |
-| `GET /items/abc` | ? | ? |
-| `GET /items/-1` | ? | ? |
+| `GET /items/42` | `200` | `{"item_id":42}` |
+| `GET /items/abc` | `422` | erreur de validation FastAPI |
+| `GET /items/-1` | `200` | `{"item_id":-1}` |
 
 La dernière ligne vous pose une question : rien dans le code n'interdit un identifiant négatif.
 Corrigez avec `Path` :
@@ -140,6 +140,15 @@ curl "http://localhost:8000/items?limit=5&q=velo"
 curl "http://localhost:8000/items?limit=500"      # attendu : 422
 curl "http://localhost:8000/items?disponible=oui" # que se passe-t-il ?
 ```
+
+Résultats observés :
+
+| Requête | Code attendu | Corps |
+|---|---|---|
+| `GET /items` | `200` | `{"skip":0,"limit":20,"q":null,"disponible":null}` |
+| `GET /items?limit=5&q=velo` | `200` | `{"skip":0,"limit":5,"q":"velo","disponible":null}` |
+| `GET /items?limit=500` | `422` | erreur de validation FastAPI |
+| `GET /items?disponible=oui` | `422` | erreur de validation FastAPI |
 
 La dernière : FastAPI accepte `true`, `false`, `1`, `0`, `yes`, `no`, `on`, `off` pour un booléen.
 Testez `disponible=peut-etre` pour voir l'erreur.

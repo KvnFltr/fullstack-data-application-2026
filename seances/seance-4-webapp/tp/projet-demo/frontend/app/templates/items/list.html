@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Items - GearShare{% endblock %}
+{% block content %}
+<h1>Matériel disponible</h1>
+<a href="/items/new">Proposer un objet</a>
+<table>
+  <thead><tr><th>Titre</th><th>Tarif par jour</th><th>Disponible</th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr>
+      <td><a href="/items/{{ item.id }}">{{ item.titre }}</a></td>
+      <td>{{ item.tarif_jour }} €</td>
+      <td>{{ "Oui" if item.disponible else "Non" }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="3">Aucun item.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
